@@ -59,6 +59,29 @@ static const Color cColorStartNextSubStep = Color::sGetDistinctColor(18);
 static const Color cColorFindCCDContacts = Color::sGetDistinctColor(19);
 static const Color cColorStepListeners = Color::sGetDistinctColor(20);
 
+namespace {
+
+class UpdateContext
+{
+public:
+
+    UpdateContext(JobSystem *inJobSystem) : mJobSystem(inJobSystem)
+    {
+        mJobSystem->OnPhysicsSystemUpdateStarted();
+    }
+
+    ~UpdateContext()
+    {
+        mJobSystem->OnPhysicsSystemUpdateCompleted();
+    }
+
+private:
+
+    JobSystem * mJobSystem;
+};
+
+} // unnamed namespace
+
 PhysicsSystem::~PhysicsSystem()
 {
 	// Remove broadphase
@@ -123,6 +146,8 @@ EPhysicsUpdateError PhysicsSystem::Update(float inDeltaTime, int inCollisionStep
 
 	JPH_ASSERT(inDeltaTime >= 0.0f);
 	JPH_ASSERT(inIntegrationSubSteps <= PhysicsUpdateContext::cMaxSubSteps);
+
+    UpdateContext updateContext(inJobSystem);
 
 	// Sync point for the broadphase. This will allow it to do clean up operations without having any mutexes locked yet.
 	mBroadPhase->FrameSync();

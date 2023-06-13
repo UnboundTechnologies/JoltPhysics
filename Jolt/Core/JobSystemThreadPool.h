@@ -42,10 +42,15 @@ public:
 	// See JobSystem
 	virtual int				GetMaxConcurrency() const override				{ return int(mThreads.size()) + 1; }
 	virtual JobHandle		CreateJob(const char *inName, ColorArg inColor, const JobFunction &inJobFunction, uint32 inNumDependencies = 0) override;
+	virtual void			OnPhysicsSystemUpdateStarted() override;
+	virtual void			OnPhysicsSystemUpdateCompleted() override;
 
 	/// Change the max concurrency after initialization
 	void					SetNumThreads(int inNumThreads)					{ StopThreads(); StartThreads(inNumThreads); }
-	
+
+	static constexpr int cInvalidThreadIndex = -1;
+	static int				GetCurrentThreadIndex();
+
 protected:
 	// See JobSystem
 	virtual void			QueueJob(Job *inJob) override;

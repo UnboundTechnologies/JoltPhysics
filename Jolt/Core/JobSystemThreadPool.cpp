@@ -21,7 +21,18 @@
 	JPH_SUPPRESS_WARNING_POP
 #endif
 
+namespace {
+
+thread_local int threadIndex = JPH::JobSystemThreadPool::cInvalidThreadIndex;
+
+} // unnamed namespace
+
 JPH_NAMESPACE_BEGIN
+
+int JobSystemThreadPool::GetCurrentThreadIndex()
+{
+    return threadIndex;
+}
 
 void JobSystemThreadPool::Init(uint inMaxJobs, uint inMaxBarriers, int inNumThreads)
 {
@@ -274,6 +285,8 @@ void JobSystemThreadPool::ThreadMain(int inThreadIndex)
 	SetThreadName(name);
 #endif // JPH_PLATFORM_WINDOWS && !JPH_COMPILER_MINGW
 
+    threadIndex = inThreadIndex;
+
 	// Enable floating point exceptions
 	FPExceptionsEnable enable_exceptions;
 	JPH_UNUSED(enable_exceptions);
@@ -310,7 +323,19 @@ void JobSystemThreadPool::ThreadMain(int inThreadIndex)
 		}
 	}
 
+    threadIndex = cInvalidThreadIndex;
+
 	JPH_PROFILE_THREAD_END();
+}
+
+void JobSystemThreadPool::OnPhysicsSystemUpdateStarted()
+{
+    threadIndex = int(mThreads.size());
+}
+
+void JobSystemThreadPool::OnPhysicsSystemUpdateCompleted()
+{
+    threadIndex = cInvalidThreadIndex;
 }
 
 JPH_NAMESPACE_END
