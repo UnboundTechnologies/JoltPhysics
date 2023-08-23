@@ -99,6 +99,7 @@ public:
 
 	/// Get axis and angle that represents this quaternion, outAngle will always be in the range \f$[0, \pi]\f$
 	JPH_INLINE void				GetAxisAngle(Vec3 &outAxis, float &outAngle) const;
+	JPH_INLINE float			GetAngle() const;
 
 	/// Create quaternion that rotates a vector from the direction of inFrom to the direction of inTo along the shortest path
 	/// @see https://www.euclideanspace.com/maths/algebra/vectors/angleBetween/index.htm

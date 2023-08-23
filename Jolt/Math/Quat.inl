@@ -97,6 +97,13 @@ void Quat::GetAxisAngle(Vec3 &outAxis, float &outAngle) const
 	}
 }
 
+float Quat::GetAngle() const
+{
+	JPH_ASSERT(IsNormalized());
+	const float abs_w = EnsureWPositive().GetW();
+	return (abs_w >= 1.0f ? 0.0f : 2.0f * ACos(abs_w));
+}
+
 Quat Quat::sFromTo(Vec3Arg inFrom, Vec3Arg inTo)
 {
 	/* 
