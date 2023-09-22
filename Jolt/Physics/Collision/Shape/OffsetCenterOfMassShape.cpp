@@ -39,6 +39,12 @@ OffsetCenterOfMassShape::OffsetCenterOfMassShape(const OffsetCenterOfMassShapeSe
 	outResult.Set(this);
 }
 
+OffsetCenterOfMassShape::OffsetCenterOfMassShape(Vec3Arg inOffset, const Shape* inShape) :
+	DecoratedShape(EShapeSubType::OffsetCenterOfMass, inShape),
+	mOffset(inOffset)
+{
+}
+
 AABox OffsetCenterOfMassShape::GetLocalBounds() const
 {
 	AABox bounds = mInnerShape->GetLocalBounds();

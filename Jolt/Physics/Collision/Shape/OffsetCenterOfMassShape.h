@@ -40,6 +40,7 @@ public:
 	/// Constructor
 									OffsetCenterOfMassShape() : DecoratedShape(EShapeSubType::OffsetCenterOfMass) { }
 									OffsetCenterOfMassShape(const OffsetCenterOfMassShapeSettings &inSettings, ShapeResult &outResult);
+									OffsetCenterOfMassShape(Vec3Arg inOffset, const Shape* inShape);
 
 	/// Access the offset that is applied to the center of mass
 	Vec3							GetOffset() const										{ return mOffset; }
