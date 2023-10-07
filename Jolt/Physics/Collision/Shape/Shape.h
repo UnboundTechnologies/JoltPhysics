@@ -186,7 +186,7 @@ public:
 
 	/// User data (to be used freely by the application)
 	uint64							GetUserData() const													{ return mUserData; }
-	void							SetUserData(uint64 inUserData) const								{ mUserData = inUserData; }
+	void							SetUserData(uint64 inUserData)										{ mUserData = inUserData; }
 
 	/// Check if this shape can only be used to create a static body or if it can also be dynamic/kinematic
 	virtual bool					MustBeStatic() const												{ return false; }
@@ -407,7 +407,7 @@ protected:
 	virtual void					RestoreBinaryState(StreamIn &inStream);
 
 private:
-	mutable uint64					mUserData = 0;
+	uint64							mUserData = 0;
 	EShapeType						mShapeType;
 	EShapeSubType					mShapeSubType;
 };
